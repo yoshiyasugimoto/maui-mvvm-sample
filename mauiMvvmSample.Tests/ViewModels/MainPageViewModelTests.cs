@@ -4,42 +4,40 @@ using mauiMvvmSample.ViewModels;
 
 namespace mauiMvvmSample.Tests.ViewModels;
 
-[TestClass]
 public class MainPageViewModelTests
 {
     private Mock<ICounterService> _mockCounterService = null!;
     private MainPageViewModel _viewModel = null!;
 
-    [TestInitialize]
-    public void Setup()
+    public MainPageViewModelTests()
     {
         _mockCounterService = new Mock<ICounterService>();
         _mockCounterService.Setup(x => x.CurrentCount).Returns(0);
         _viewModel = new MainPageViewModel(_mockCounterService.Object);
     }
 
-    [TestMethod]
+    [Fact]
     public void Constructor_ShouldSubscribeToCountChangedEvent()
     {
         // Assert
         _mockCounterService.VerifyAdd(x => x.CountChanged += It.IsAny<EventHandler<CountChangedEventArgs>>(), Times.Once);
     }
 
-    [TestMethod]
+    [Fact]
     public void Constructor_ShouldInitializeWithDefaultButtonText()
     {
         // Assert
-        Assert.AreEqual("Click me", _viewModel.ButtonText);
+        Assert.Equal("Click me", _viewModel.ButtonText);
     }
 
-    [TestMethod]
+    [Fact]
     public void Constructor_ShouldInitializeWithEmptyAnnounceText()
     {
         // Assert
-        Assert.AreEqual(string.Empty, _viewModel.AnnounceText);
+        Assert.Equal(string.Empty, _viewModel.AnnounceText);
     }
 
-    [TestMethod]
+    [Fact]
     public void Count_ShouldReturnCurrentCountFromService()
     {
         // Arrange
@@ -49,10 +47,10 @@ public class MainPageViewModelTests
         var count = _viewModel.Count;
         
         // Assert
-        Assert.AreEqual(42, count);
+        Assert.Equal(42, count);
     }
 
-    [TestMethod]
+    [Fact]
     public async Task IncrementCounterCommand_ShouldCallServiceIncrementAsync()
     {
         // Act
@@ -62,7 +60,7 @@ public class MainPageViewModelTests
         _mockCounterService.Verify(x => x.IncrementAsync(), Times.Once);
     }
 
-    [TestMethod]
+    [Fact]
     public async Task IncrementCounterCommand_ShouldSetAnnounceTextOnException()
     {
         // Arrange
@@ -73,10 +71,10 @@ public class MainPageViewModelTests
         await _viewModel.IncrementCounterCommand.ExecuteAsync(null);
         
         // Assert
-        Assert.AreEqual("Error: Test error", _viewModel.AnnounceText);
+        Assert.Equal("Error: Test error", _viewModel.AnnounceText);
     }
 
-    [TestMethod]
+    [Fact]
     public async Task ResetCounterCommand_ShouldCallServiceResetAsync()
     {
         // Act
@@ -86,7 +84,7 @@ public class MainPageViewModelTests
         _mockCounterService.Verify(x => x.ResetAsync(), Times.Once);
     }
 
-    [TestMethod]
+    [Fact]
     public async Task ResetCounterCommand_ShouldSetAnnounceTextOnException()
     {
         // Arrange
@@ -97,10 +95,10 @@ public class MainPageViewModelTests
         await _viewModel.ResetCounterCommand.ExecuteAsync(null);
         
         // Assert
-        Assert.AreEqual("Error: Reset error", _viewModel.AnnounceText);
+        Assert.Equal("Error: Reset error", _viewModel.AnnounceText);
     }
 
-    [TestMethod]
+    [Fact]
     public void OnCountChanged_WithZeroCount_ShouldUpdateButtonTextToClickMe()
     {
         // Arrange
@@ -111,11 +109,11 @@ public class MainPageViewModelTests
         _mockCounterService.Raise(x => x.CountChanged += null, _mockCounterService.Object, eventArgs);
         
         // Assert
-        Assert.AreEqual("Click me", _viewModel.ButtonText);
-        Assert.AreEqual("Click me", _viewModel.AnnounceText);
+        Assert.Equal("Click me", _viewModel.ButtonText);
+        Assert.Equal("Click me", _viewModel.AnnounceText);
     }
 
-    [TestMethod]
+    [Fact]
     public void OnCountChanged_WithOneCount_ShouldUpdateButtonTextToSingular()
     {
         // Arrange
@@ -126,11 +124,11 @@ public class MainPageViewModelTests
         _mockCounterService.Raise(x => x.CountChanged += null, _mockCounterService.Object, eventArgs);
         
         // Assert
-        Assert.AreEqual("Clicked 1 time", _viewModel.ButtonText);
-        Assert.AreEqual("Clicked 1 time", _viewModel.AnnounceText);
+        Assert.Equal("Clicked 1 time", _viewModel.ButtonText);
+        Assert.Equal("Clicked 1 time", _viewModel.AnnounceText);
     }
 
-    [TestMethod]
+    [Fact]
     public void OnCountChanged_WithMultipleCount_ShouldUpdateButtonTextToPlural()
     {
         // Arrange
@@ -141,11 +139,11 @@ public class MainPageViewModelTests
         _mockCounterService.Raise(x => x.CountChanged += null, _mockCounterService.Object, eventArgs);
         
         // Assert
-        Assert.AreEqual("Clicked 5 times", _viewModel.ButtonText);
-        Assert.AreEqual("Clicked 5 times", _viewModel.AnnounceText);
+        Assert.Equal("Clicked 5 times", _viewModel.ButtonText);
+        Assert.Equal("Clicked 5 times", _viewModel.AnnounceText);
     }
 
-    [TestMethod]
+    [Fact]
     public void OnCountChanged_ShouldTriggerPropertyChangedForCount()
     {
         // Arrange
@@ -167,11 +165,11 @@ public class MainPageViewModelTests
         _mockCounterService.Raise(x => x.CountChanged += null, _mockCounterService.Object, eventArgs);
         
         // Assert
-        Assert.IsTrue(propertyChangedRaised);
-        Assert.AreEqual(nameof(_viewModel.Count), changedPropertyName);
+        Assert.True(propertyChangedRaised);
+        Assert.Equal(nameof(_viewModel.Count), changedPropertyName);
     }
 
-    [TestMethod]
+    [Fact]
     public void ButtonText_PropertyChanged_ShouldNotifyObservers()
     {
         // Arrange
@@ -191,12 +189,12 @@ public class MainPageViewModelTests
         _viewModel.ButtonText = "New Text";
         
         // Assert
-        Assert.IsTrue(propertyChangedRaised);
-        Assert.AreEqual(nameof(_viewModel.ButtonText), changedPropertyName);
-        Assert.AreEqual("New Text", _viewModel.ButtonText);
+        Assert.True(propertyChangedRaised);
+        Assert.Equal(nameof(_viewModel.ButtonText), changedPropertyName);
+        Assert.Equal("New Text", _viewModel.ButtonText);
     }
 
-    [TestMethod]
+    [Fact]
     public void AnnounceText_PropertyChanged_ShouldNotifyObservers()
     {
         // Arrange
@@ -216,24 +214,24 @@ public class MainPageViewModelTests
         _viewModel.AnnounceText = "Test Announcement";
         
         // Assert
-        Assert.IsTrue(propertyChangedRaised);
-        Assert.AreEqual(nameof(_viewModel.AnnounceText), changedPropertyName);
-        Assert.AreEqual("Test Announcement", _viewModel.AnnounceText);
+        Assert.True(propertyChangedRaised);
+        Assert.Equal(nameof(_viewModel.AnnounceText), changedPropertyName);
+        Assert.Equal("Test Announcement", _viewModel.AnnounceText);
     }
 
-    [TestMethod]
+    [Fact]
     public void Commands_ShouldBeNotNull()
     {
         // Assert
-        Assert.IsNotNull(_viewModel.IncrementCounterCommand);
-        Assert.IsNotNull(_viewModel.ResetCounterCommand);
+        Assert.NotNull(_viewModel.IncrementCounterCommand);
+        Assert.NotNull(_viewModel.ResetCounterCommand);
     }
 
-    [TestMethod]
+    [Fact]
     public void Commands_ShouldBeExecutable()
     {
         // Assert
-        Assert.IsTrue(_viewModel.IncrementCounterCommand.CanExecute(null));
-        Assert.IsTrue(_viewModel.ResetCounterCommand.CanExecute(null));
+        Assert.True(_viewModel.IncrementCounterCommand.CanExecute(null));
+        Assert.True(_viewModel.ResetCounterCommand.CanExecute(null));
     }
 }

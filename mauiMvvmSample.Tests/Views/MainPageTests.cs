@@ -3,10 +3,9 @@ using mauiMvvmSample.ViewModels;
 
 namespace mauiMvvmSample.Tests.Views;
 
-[TestClass]
 public class MainPageViewModelBindingTests
 {
-    [TestMethod]
+    [Fact]
     public void ViewModelProperties_ShouldBeAccessible()
     {
         // Arrange
@@ -17,14 +16,14 @@ public class MainPageViewModelBindingTests
         var viewModel = new MainPageViewModel(mockCounterService.Object);
         
         // Assert
-        Assert.IsNotNull(viewModel);
-        Assert.IsNotNull(viewModel.IncrementCounterCommand);
-        Assert.IsNotNull(viewModel.ResetCounterCommand);
-        Assert.AreEqual("Click me", viewModel.ButtonText);
-        Assert.AreEqual(string.Empty, viewModel.AnnounceText);
+        Assert.NotNull(viewModel);
+        Assert.NotNull(viewModel.IncrementCounterCommand);
+        Assert.NotNull(viewModel.ResetCounterCommand);
+        Assert.Equal("Click me", viewModel.ButtonText);
+        Assert.Equal(string.Empty, viewModel.AnnounceText);
     }
 
-    [TestMethod]
+    [Fact]
     public void ViewModelNamespace_ShouldBeCorrect()
     {
         // Arrange
@@ -34,6 +33,6 @@ public class MainPageViewModelBindingTests
         var viewModel = new MainPageViewModel(mockCounterService.Object);
         
         // Assert
-        Assert.AreEqual("mauiMvvmSample.ViewModels.MainPageViewModel", viewModel.GetType().FullName);
+        Assert.Equal("mauiMvvmSample.ViewModels.MainPageViewModel", viewModel.GetType().FullName);
     }
 }
