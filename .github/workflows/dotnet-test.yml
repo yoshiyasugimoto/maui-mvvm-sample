@@ -26,9 +26,12 @@ jobs:
 
     - name: Restore dependencies
       run: dotnet restore
+      working-directory: ./mauiMvvmSample
 
     - name: Build
       run: dotnet build --no-restore
+      working-directory: ./mauiMvvmSample
 
     - name: Test
       run: dotnet test --no-build
+      working-directory: ./mauiMvvmSample.Tests
