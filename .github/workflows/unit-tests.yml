@@ -1,0 +1,50 @@
+name: unit-tests
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      CONFIGURATION: Release
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Restore
+        run: dotnet restore
+
+      # テストは net9.0 ターゲットのみ実行（MAUI ワークロード不要）
+      - name: Test (xUnit)
+        run: >
+          dotnet test mauiMvvmSample.Tests/mauiMvvmSample.Tests.csproj
+          -c $CONFIGURATION
+          --framework net9.0
+          --logger "trx;LogFileName=test-results.trx"
+          --collect:"XPlat Code Coverage"
+
+      # カバレッジを HTML に整形
+      - name: ReportGenerator
+        uses: danielpalme/ReportGenerator-GitHub-Action@v5
+        if: always()
+        with:
+          reports: "**/TestResults/**/coverage.cobertura.xml"
+          targetdir: "coveragereport"
+          reporttypes: "HtmlInline;Cobertura"
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-artifacts
+          path: |
+            **/TestResults/*.trx
+            coveragereport
