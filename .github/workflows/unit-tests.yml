@@ -19,15 +19,17 @@ jobs:
         with:
           dotnet-version: 9.0.x
 
-      - name: Restore
-        run: dotnet restore
+      # テストプロジェクトのみをリストア（MAUIワークロード不要）
+      - name: Restore test project
+        run: dotnet restore mauiMvvmSample.Tests/mauiMvvmSample.Tests.csproj
 
-      # テストは net9.0 ターゲットのみ実行（MAUI ワークロード不要）
+      # テストは net9.0 ターゲットのみ実行
       - name: Test (xUnit)
         run: >
           dotnet test mauiMvvmSample.Tests/mauiMvvmSample.Tests.csproj
           -c $CONFIGURATION
           --framework net9.0
+          --no-restore
           --logger "trx;LogFileName=test-results.trx"
           --collect:"XPlat Code Coverage"
 
