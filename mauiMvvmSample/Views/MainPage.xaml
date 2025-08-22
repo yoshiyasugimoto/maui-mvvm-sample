@@ -31,6 +31,7 @@
                 Text="{Binding ButtonText}" 
                 SemanticProperties.Hint="Counts the number of times you click"
                 Command="{Binding IncrementCounterCommand}"
+                AutomationId="CounterBtn"
                 HorizontalOptions="Fill" />
         </VerticalStackLayout>
     </ScrollView>

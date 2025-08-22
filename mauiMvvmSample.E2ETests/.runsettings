@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <TestRunParameters>
+    <!-- Platform: Windows or Mac -->
+    <Parameter name="platform" value="Mac" />
+    
+    <!-- App Path: Path to your compiled app -->
+    <!-- For Windows: path to .exe file -->
+    <!-- For Mac: path to .app bundle -->
+    <Parameter name="appPath" value="./bin/Debug/net9.0-maccatalyst/mauiMvvmSample.app" />
+  </TestRunParameters>
+  
+  <NUnit>
+    <TestOutputXml>TestResults</TestOutputXml>
+  </NUnit>
+</RunSettings>
